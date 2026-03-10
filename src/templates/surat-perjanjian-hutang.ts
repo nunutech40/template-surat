@@ -51,7 +51,11 @@ export const suratPerjanjianHutang: TemplateConfig = {
                     <p style="text-indent:40px;">Pinjaman wajib dikembalikan dalam jangka waktu <strong>${data.jangkaWaktu || '...'}</strong> terhitung sejak tanggal perjanjian ini ditandatangani.</p>
                     <p style="margin-top:12px;"><strong>Pasal 3 — Cara Pembayaran</strong></p>
                     <p style="text-indent:40px;">Pengembalian pinjaman dilakukan dengan cara: <strong>${data.caraPembayaran || '...'}</strong>.</p>
-                    ${data.jaminan ? `<p style="margin-top:12px;"><strong>Pasal 4 — Jaminan</strong></p><p style="text-indent:40px;">Sebagai jaminan pinjaman, Pihak Kedua menyerahkan: <strong>${data.jaminan}</strong>.</p>` : ''}
+                    ${data.jaminan ? `<p style="margin-top:12px;"><strong>Pasal 4 — Jaminan</strong></p><p style="text-indent:40px;">Sebagai jaminan pinjaman, Pihak Kedua menyerahkan: <strong>${data.jaminan}</strong>. Apabila Pihak Kedua tidak mampu melunasi hutang sesuai jangka waktu yang disepakati, maka Pihak Pertama berhak atas jaminan tersebut.</p>` : ''}
+                    <p style="margin-top:12px;"><strong>Pasal ${data.jaminan ? '5' : '4'} — Sanksi Keterlambatan</strong></p>
+                    <p style="text-indent:40px;">Apabila Pihak Kedua terlambat atau gagal melunasi hutang, maka Pihak Pertama berhak menuntut pelunasan melalui jalur hukum yang berlaku.</p>
+                    <p style="margin-top:12px;"><strong>Pasal ${data.jaminan ? '6' : '5'} — Penyelesaian Perselisihan</strong></p>
+                    <p style="text-indent:40px;">Segala perselisihan diselesaikan secara musyawarah mufakat. Apabila tidak tercapai, akan diselesaikan melalui Pengadilan Negeri ${data.kota || '...'}.</p>
                     <p style="text-indent:40px;margin-top:16px;">Demikian surat perjanjian ini dibuat dalam rangkap 2 (dua) bermaterai cukup, masing-masing mempunyai kekuatan hukum yang sama.</p>
                 </div>
                 <div style="display:flex;justify-content:space-between;margin-top:40px;">

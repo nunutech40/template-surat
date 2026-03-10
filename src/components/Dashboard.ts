@@ -65,6 +65,34 @@ export function renderDashboard(container: HTMLElement) {
         </div>
       </div>
 
+      <!-- ⭐ Featured — 5 Template Terpopuler -->
+      <div class="featured-section">
+        <div class="featured-header">
+          <h2>⭐ 5 Template Terpopuler</h2>
+          <p>Template paling sering digunakan</p>
+        </div>
+        <div class="featured-grid">
+          ${allTemplates.slice(0, 5).map(t => {
+    const c = catColor[t.category] || catColor.lamaran;
+    return `
+            <a href="#/template/${t.id}" class="featured-card" style="--card-accent:${c.accent};">
+              <div class="featured-card-icon">${t.icon}</div>
+              <h3>${t.name}</h3>
+              <p>${t.description}</p>
+              <div class="featured-card-cta">Buat Surat →</div>
+            </a>`;
+  }).join('')}
+        </div>
+      </div>
+
+      <!-- All Templates -->
+      <div class="all-tpl-section">
+        <div class="all-tpl-header">
+          <h2>📋 Semua Template</h2>
+          <span class="all-tpl-count">${allTemplates.length} template tersedia</span>
+        </div>
+      </div>
+
       <!-- Template Grid -->
       <div class="tpl-grid" id="template-grid">
         ${allTemplates.map(t => {
