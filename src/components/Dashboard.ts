@@ -134,7 +134,7 @@ export function renderDashboard(container: HTMLElement) {
                 </div>
                 <div class="hist-actions">
                   <a href="#/template/${l.templateId}?edit=${l.id}" class="hist-btn hist-open">📝 Edit</a>
-                  <button class="hist-btn hist-del" data-delete-id="${l.id}">🗑️</button>
+                  <button class="hist-btn hist-del" onclick="window.__suratDelete('${l.id}')">🗑️</button>
                 </div>
               </div>
             `).join('')}
@@ -168,19 +168,11 @@ export function renderDashboard(container: HTMLElement) {
     });
   });
 
-  // ── Delete (event delegation — attach ONCE, survives re-renders) ─────
-  if (!container.dataset.delHandler) {
-    container.dataset.delHandler = '1';
-    container.addEventListener('click', (e) => {
-      const target = (e.target as HTMLElement).closest('[data-delete-id]') as HTMLElement | null;
-      if (!target) return;
-      e.preventDefault();
-      e.stopPropagation();
-      const id = target.dataset.deleteId;
-      if (id && confirm('Hapus surat ini?')) {
-        deleteLetter(id);
-        renderDashboard(container);
-      }
-    });
-  }
+  // ── Delete (global function — ZERO chance of listener stacking) ─────
+  (window as any).__suratDelete = (id: string) => {
+    if (confirm('Hapus surat ini?')) {
+      deleteLetter(id);
+      renderDashboard(container);
+    }
+  };
 }
