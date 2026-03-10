@@ -33,9 +33,11 @@ export const suratSKTM: TemplateConfig = {
         { id: 'nip', label: 'NIP (opsional)', type: 'text', required: false, placeholder: '19750101 200312 1 001' },
         { id: 'namaWarga', label: 'Nama Warga', type: 'text', required: true, placeholder: 'Budi Santoso' },
         { id: 'nik', label: 'NIK', type: 'text', required: true, placeholder: '3201xxxxxxxxxx' },
+        { id: 'noKK', label: 'No. Kartu Keluarga', type: 'text', required: false, placeholder: '3201xxxxxxxxxx' },
         { id: 'ttl', label: 'Tempat, Tanggal Lahir', type: 'text', required: true, placeholder: 'Bandung, 15 Mei 1990' },
         { id: 'jenisKelamin', label: 'Jenis Kelamin', type: 'dropdown', required: true, options: ['Laki-laki', 'Perempuan'] },
         { id: 'agama', label: 'Agama', type: 'dropdown', required: true, options: ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'] },
+        { id: 'statusPerkawinan', label: 'Status Perkawinan', type: 'dropdown', required: true, options: ['Belum Kawin', 'Kawin', 'Cerai Hidup', 'Cerai Mati'] },
         { id: 'pekerjaan', label: 'Pekerjaan', type: 'text', required: true, placeholder: 'Buruh Harian Lepas' },
         { id: 'alamat', label: 'Alamat', type: 'textarea', required: true, placeholder: 'Jl. Melati No. 5, RT 03/RW 02' },
         { id: 'keperluan', label: 'Keperluan', type: 'text', required: true, placeholder: 'Mengajukan beasiswa / keringanan biaya pendidikan' },
@@ -60,9 +62,11 @@ export const suratSKTM: TemplateConfig = {
                     <table class="letter-data-table" style="margin:8px 0 8px 40px;">
                         <tr><td style="width:160px;">Nama</td><td>: <strong>${data.namaWarga || '...'}</strong></td></tr>
                         <tr><td>NIK</td><td>: ${data.nik || '...'}</td></tr>
+                        ${data.noKK ? `<tr><td>No. KK</td><td>: ${data.noKK}</td></tr>` : ''}
                         <tr><td>Tempat, Tgl Lahir</td><td>: ${data.ttl || '...'}</td></tr>
                         <tr><td>Jenis Kelamin</td><td>: ${data.jenisKelamin || '...'}</td></tr>
                         <tr><td>Agama</td><td>: ${data.agama || '...'}</td></tr>
+                        <tr><td>Status Perkawinan</td><td>: ${data.statusPerkawinan || '...'}</td></tr>
                         <tr><td>Pekerjaan</td><td>: ${data.pekerjaan || '...'}</td></tr>
                         <tr><td>Alamat</td><td>: ${data.alamat || '...'}</td></tr>
                     </table>

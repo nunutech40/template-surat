@@ -20,6 +20,10 @@ export const suratSKU: TemplateConfig = {
         { id: 'jabatan', label: 'Jabatan', type: 'text', required: true, defaultValue: 'Lurah' },
         { id: 'namaWarga', label: 'Nama Pemilik Usaha', type: 'text', required: true, placeholder: 'Budi Santoso' },
         { id: 'nik', label: 'NIK', type: 'text', required: true, placeholder: '3201xxxxxxxxxx' },
+        { id: 'ttl', label: 'Tempat, Tanggal Lahir', type: 'text', required: true, placeholder: 'Bandung, 15 Mei 1990' },
+        { id: 'jenisKelamin', label: 'Jenis Kelamin', type: 'dropdown', required: true, options: ['Laki-laki', 'Perempuan'] },
+        { id: 'agama', label: 'Agama', type: 'dropdown', required: true, options: ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'] },
+        { id: 'pekerjaan', label: 'Pekerjaan', type: 'text', required: true, placeholder: 'Wiraswasta' },
         { id: 'alamat', label: 'Alamat', type: 'textarea', required: true, placeholder: 'Jl. Melati No. 5' },
         { id: 'namaUsaha', label: 'Nama Usaha', type: 'text', required: true, placeholder: 'Toko Makmur Jaya' },
         { id: 'jenisUsaha', label: 'Jenis Usaha', type: 'text', required: true, placeholder: 'Perdagangan Sembako' },
@@ -42,6 +46,10 @@ export const suratSKU: TemplateConfig = {
                     <table class="letter-data-table" style="margin:8px 0 8px 40px;">
                         <tr><td style="width:160px;">Nama</td><td>: <strong>${data.namaWarga || '...'}</strong></td></tr>
                         <tr><td>NIK</td><td>: ${data.nik || '...'}</td></tr>
+                        <tr><td>Tempat, Tgl Lahir</td><td>: ${data.ttl || '...'}</td></tr>
+                        <tr><td>Jenis Kelamin</td><td>: ${data.jenisKelamin || '...'}</td></tr>
+                        <tr><td>Agama</td><td>: ${data.agama || '...'}</td></tr>
+                        <tr><td>Pekerjaan</td><td>: ${data.pekerjaan || '...'}</td></tr>
                         <tr><td>Alamat</td><td>: ${data.alamat || '...'}</td></tr>
                     </table>
                     <p style="text-indent:40px;">Benar yang bersangkutan memiliki usaha dengan rincian sebagai berikut:</p>

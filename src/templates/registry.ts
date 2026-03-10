@@ -20,14 +20,39 @@ import { suratIzinSekolah } from './surat-izin-sekolah';
 import { suratPengantarProposal } from './surat-pengantar-proposal';
 import { suratUndanganRapat } from './surat-undangan-rapat';
 
+// Wave 3 — (+10 templates)
+import { suratPerjanjianHutang } from './surat-perjanjian-hutang';
+import { suratPerjanjianKerjasama } from './surat-perjanjian-kerjasama';
+import { suratPernyataan } from './surat-pernyataan';
+import { suratPermohonanMagang } from './surat-permohonan-magang';
+import { suratPermohonanCuti } from './surat-permohonan-cuti';
+import { suratKeteranganKerja } from './surat-keterangan-kerja';
+import { suratRekomendasi } from './surat-rekomendasi';
+import { suratTugas } from './surat-tugas';
+import { suratUndanganAcara } from './surat-undangan-acara';
+import { suratIzinOrangTua } from './surat-izin-orangtua';
+
+// Wave 4 — (+10 templates)
+import { suratPeringatan } from './surat-peringatan';
+import { suratPermohonanBantuan } from './surat-permohonan-bantuan';
+import { suratBelumMenikah } from './surat-belum-menikah';
+import { suratKeteranganPindah } from './surat-keterangan-pindah';
+import { suratKeteranganKematian } from './surat-keterangan-kematian';
+import { suratUcapanTerimakasih } from './surat-ucapan-terimakasih';
+import { suratKeteranganLahir } from './surat-keterangan-lahir';
+import { suratBeritaAcara } from './surat-berita-acara';
+import { suratIzinKegiatan } from './surat-izin-kegiatan';
+import { suratDukaCita } from './surat-duka-cita';
+import { suratPermohonanSponsor } from './surat-permohonan-sponsor';
+
 const templates: TemplateConfig[] = [
-    // Wave 1 — MVP
+    // Wave 1 — MVP (5)
     suratLamaran,
     suratKeteranganDomisili,
     suratResign,
     suratKuasa,
     suratPengantarRT,
-    // Wave 2
+    // Wave 2 (10)
     suratSKTM,
     suratSKU,
     suratKeteranganPenghasilan,
@@ -38,6 +63,29 @@ const templates: TemplateConfig[] = [
     suratIzinSekolah,
     suratPengantarProposal,
     suratUndanganRapat,
+    // Wave 3 (10)
+    suratPerjanjianHutang,
+    suratPerjanjianKerjasama,
+    suratPernyataan,
+    suratPermohonanMagang,
+    suratPermohonanCuti,
+    suratKeteranganKerja,
+    suratRekomendasi,
+    suratTugas,
+    suratUndanganAcara,
+    suratIzinOrangTua,
+    // Wave 4 (10)
+    suratPeringatan,
+    suratPermohonanBantuan,
+    suratBelumMenikah,
+    suratKeteranganPindah,
+    suratKeteranganKematian,
+    suratUcapanTerimakasih,
+    suratKeteranganLahir,
+    suratBeritaAcara,
+    suratIzinKegiatan,
+    suratDukaCita,
+    suratPermohonanSponsor,
 ];
 
 export function getAllTemplates(): TemplateConfig[] {
