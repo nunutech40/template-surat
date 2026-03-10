@@ -64,7 +64,7 @@ async function bootApp() {
     renderNav(navContainer, () => window.location.reload());
     mountFeedbackButton();
 
-    // Route handler
+    // Route handler — use named ref to prevent HMR duplicate listeners
     function route() {
         const hash = window.location.hash || '#/';
 
@@ -77,10 +77,25 @@ async function bootApp() {
         }
     }
 
+    // Remove any previous listener from HMR cycles
+    if ((window as any).__suratRouteHandler) {
+        window.removeEventListener('hashchange', (window as any).__suratRouteHandler);
+    }
+    (window as any).__suratRouteHandler = route;
+
     route();
     window.addEventListener('hashchange', route);
 
     onAuthChange(() => {
         if (!isLoggedIn()) window.location.reload();
+    });
+}
+
+// Vite HMR cleanup
+if (import.meta.hot) {
+    import.meta.hot.dispose(() => {
+        if ((window as any).__suratRouteHandler) {
+            window.removeEventListener('hashchange', (window as any).__suratRouteHandler);
+        }
     });
 }

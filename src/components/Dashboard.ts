@@ -25,6 +25,10 @@ function formatDate(dateStr: string): string {
 }
 
 export function renderDashboard(container: HTMLElement) {
+  // Remove all old listeners: replace container's internals cleanly
+  // by removing all children first, then setting new innerHTML
+  while (container.firstChild) container.removeChild(container.firstChild);
+
   const allTemplates = getAllTemplates();
   const categories = getCategories();
   const letters = getAllLetters();
@@ -134,7 +138,7 @@ export function renderDashboard(container: HTMLElement) {
                 </div>
                 <div class="hist-actions">
                   <a href="#/template/${l.templateId}?edit=${l.id}" class="hist-btn hist-open">📝 Edit</a>
-                  <button class="hist-btn hist-del" onclick="window.__suratDelete('${l.id}')">🗑️</button>
+                  <button class="hist-btn hist-del" onclick="event.stopImmediatePropagation(); window.__suratDelete('${l.id}')">🗑️</button>
                 </div>
               </div>
             `).join('')}
@@ -168,11 +172,19 @@ export function renderDashboard(container: HTMLElement) {
     });
   });
 
-  // ── Delete (global function — ZERO chance of listener stacking) ─────
+  // ── Delete (global + lock + stopImmediatePropagation) ──────────────
+  // Lock prevents re-entry; stopImmediatePropagation in onclick kills
+  // stale listeners leftover from Vite HMR hot-reloads
   (window as any).__suratDelete = (id: string) => {
-    if (confirm('Hapus surat ini?')) {
-      deleteLetter(id);
-      renderDashboard(container);
+    if ((window as any).__deleteBusy) return;
+    (window as any).__deleteBusy = true;
+    try {
+      if (confirm('Hapus surat ini?')) {
+        deleteLetter(id);
+        renderDashboard(container);
+      }
+    } finally {
+      (window as any).__deleteBusy = false;
     }
   };
 }
