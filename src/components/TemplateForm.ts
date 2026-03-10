@@ -77,6 +77,7 @@ export function renderTemplateForm(container: HTMLElement, templateId: string, h
 
             <div class="form-actions-bar">
               <button id="btn-save" class="btn btn-ghost" ${!canCreate ? 'disabled' : ''}>💾 Simpan</button>
+              <button id="btn-word" class="btn btn-ghost" ${!canCreate ? 'disabled' : ''} style="border-color:#2563eb;color:#2563eb;">📝 Word</button>
               <button id="btn-print" class="btn btn-primary" ${!canCreate ? 'disabled' : ''}>🖨️ Print / PDF</button>
             </div>
             <div class="print-info no-print" style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;margin-top:8px;">
@@ -230,6 +231,66 @@ export function renderTemplateForm(container: HTMLElement, templateId: string, h
       setTimeout(() => printArea.remove(), 500);
 
       // Auto-save after print
+      letterhead = collectLetterhead();
+      const letter = editLetter
+        ? { ...editLetter, data: { ...formData }, letterhead: letterhead || undefined, updatedAt: new Date().toISOString() }
+        : createNewLetter(t.id, t.name, { ...formData }, letterhead || undefined);
+      saveLetter(letter);
+      if (!editLetter) incrementMonthlyCount();
+    });
+
+    // Download Word
+    container.querySelector('#btn-word')?.addEventListener('click', () => {
+      if (!canCreate) return;
+      updatePreview();
+
+      const paper = container.querySelector('#preview-paper');
+      if (!paper) return;
+
+      // Build Word-compatible HTML document
+      const wordHtml = `
+<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<style>
+  @page {
+    size: A4;
+    margin: 20mm;
+  }
+  body {
+    font-family: 'Times New Roman', serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    color: #000;
+  }
+  table { border-collapse: collapse; }
+  td, th { padding: 4px 8px; }
+  .letter-kop { text-align: center; margin-bottom: 12px; }
+  .kop-line { border: none; border-top: 3px solid #000; margin: 8px 0 16px 0; }
+  .kop-text h2 { margin: 0; font-size: 16pt; }
+  .kop-text p { margin: 2px 0; font-size: 10pt; }
+  .kop-logo { height: 60px; margin-bottom: 4px; }
+  .letter-data-table td { vertical-align: top; padding: 1px 4px; border: none; }
+  .watermark { display: none; }
+</style>
+</head>
+<body>
+${paper.innerHTML}
+</body>
+</html>`;
+
+      const blob = new Blob([wordHtml], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${t.name.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.doc`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      // Auto-save after download
       letterhead = collectLetterhead();
       const letter = editLetter
         ? { ...editLetter, data: { ...formData }, letterhead: letterhead || undefined, updatedAt: new Date().toISOString() }
