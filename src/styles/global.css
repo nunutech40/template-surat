@@ -1420,6 +1420,8 @@ textarea.f-input {
    PRINT
    ════════════════════════════════════════════════════════════════════════ */
 @media print {
+
+  /* Hide everything except the print area */
   body>*:not(#print-area) {
     display: none !important;
   }
@@ -1427,7 +1429,8 @@ textarea.f-input {
   #print-area {
     display: block !important;
     margin: 0;
-    padding: 0;
+    /* Inner padding = actual print margins (replaces @page margin) */
+    padding: 15mm 20mm;
   }
 
   .no-print,
@@ -1435,9 +1438,11 @@ textarea.f-input {
     display: none !important;
   }
 
+  /* margin: 0 → Chrome/Edge will HIDE browser headers & footers
+     (date, URL, page title, page number) */
   @page {
     size: A4;
-    margin: 20mm;
+    margin: 0;
   }
 
   .letter-page {
