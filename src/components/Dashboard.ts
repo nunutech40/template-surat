@@ -10,6 +10,10 @@ const catColor: Record<string, { bg: string; accent: string }> = {
   resign: { bg: '#fef3c7', accent: '#d97706' },
   bisnis: { bg: '#faf5ff', accent: '#7c3aed' },
   pengantar: { bg: '#fff1f2', accent: '#e11d48' },
+  izin: { bg: '#fef9c3', accent: '#ca8a04' },
+  perjanjian: { bg: '#f0fdfa', accent: '#0d9488' },
+  permohonan: { bg: '#fdf2f8', accent: '#db2777' },
+  sosial: { bg: '#fef3c7', accent: '#ea580c' },
 };
 
 function formatDate(dateStr: string): string {

@@ -31,7 +31,10 @@ export type TemplateCategory =
     | 'pengantar'
     | 'bisnis'
     | 'resign'
-    | 'sosial';
+    | 'sosial'
+    | 'izin'
+    | 'perjanjian'
+    | 'permohonan';
 
 export const categoryLabels: Record<TemplateCategory, string> = {
     lamaran: '📝 Surat Lamaran',
@@ -40,4 +43,8 @@ export const categoryLabels: Record<TemplateCategory, string> = {
     bisnis: '📋 Surat Bisnis & Perjanjian',
     resign: '💼 Surat Resign & HR',
     sosial: '🎉 Surat Sosial',
+    izin: '🏷️ Surat Izin',
+    perjanjian: '📑 Surat Perjanjian',
+    permohonan: '📩 Surat Permohonan',
 };
+
