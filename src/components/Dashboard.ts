@@ -168,16 +168,19 @@ export function renderDashboard(container: HTMLElement) {
     });
   });
 
-  // ── Delete (event delegation — robust against re-renders) ───────────
-  container.addEventListener('click', (e) => {
-    const target = (e.target as HTMLElement).closest('[data-delete-id]') as HTMLElement | null;
-    if (!target) return;
-    e.preventDefault();
-    e.stopPropagation();
-    const id = target.dataset.deleteId;
-    if (id && confirm('Hapus surat ini?')) {
-      deleteLetter(id);
-      renderDashboard(container);
-    }
-  });
+  // ── Delete (event delegation — attach ONCE, survives re-renders) ─────
+  if (!container.dataset.delHandler) {
+    container.dataset.delHandler = '1';
+    container.addEventListener('click', (e) => {
+      const target = (e.target as HTMLElement).closest('[data-delete-id]') as HTMLElement | null;
+      if (!target) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const id = target.dataset.deleteId;
+      if (id && confirm('Hapus surat ini?')) {
+        deleteLetter(id);
+        renderDashboard(container);
+      }
+    });
+  }
 }

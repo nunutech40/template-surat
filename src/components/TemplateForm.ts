@@ -1,4 +1,5 @@
 // ── TemplateForm — Dynamic Form + Live Preview + Print ────────────────
+import { htmlToDocx } from '../core/docx';
 import { getTemplate } from '../templates/registry';
 import { TemplateConfig } from '../templates/types';
 import {
@@ -240,65 +241,30 @@ export function renderTemplateForm(container: HTMLElement, templateId: string, h
     });
 
     // Download Word
-    container.querySelector('#btn-word')?.addEventListener('click', () => {
+    container.querySelector('#btn-word')?.addEventListener('click', async () => {
       if (!canCreate) return;
       updatePreview();
 
       const paper = container.querySelector('#preview-paper');
       if (!paper) return;
 
-      // Build Word-compatible HTML document with Word XML processing instructions
-      const wordHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
-      xmlns:w="urn:schemas-microsoft-com:office:word"
-      xmlns="http://www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<!--[if gte mso 9]>
-<xml>
-  <w:WordDocument>
-    <w:View>Print</w:View>
-    <w:Zoom>100</w:Zoom>
-    <w:DoNotOptimizeForBrowser/>
-  </w:WordDocument>
-</xml>
-<![endif]-->
-<style>
-  @page { size: 210mm 297mm; margin: 20mm; }
-  body {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 12pt;
-    line-height: 1.6;
-    color: #000;
-  }
-  table { border-collapse: collapse; width: 100%; }
-  td, th { padding: 4px 8px; vertical-align: top; }
-  .letter-kop { text-align: center; margin-bottom: 12px; }
-  .kop-line { border: none; border-top: 3px solid #000; margin: 8px 0 16px 0; }
-  .kop-text h2 { margin: 0; font-size: 16pt; }
-  .kop-text p { margin: 2px 0; font-size: 10pt; }
-  .kop-logo { height: 60px; margin-bottom: 4px; }
-  .letter-data-table td { vertical-align: top; padding: 1px 4px; border: none; }
-  .watermark { display: none; }
-</style>
-</head>
-<body>
-${paper.innerHTML}
-</body>
-</html>`;
+      try {
+        const docxBlob = await htmlToDocx(paper.innerHTML, t.name);
 
-      // Convert to base64 data URI — more reliable filename than blob URL
-      const fullContent = '\ufeff' + wordHtml;
-      const base64 = btoa(unescape(encodeURIComponent(fullContent)));
-      const dataUri = 'data:application/msword;base64,' + base64;
-
-      const filename = `${t.name.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.doc`;
-      const a = document.createElement('a');
-      a.href = dataUri;
-      a.download = filename;
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+        const filename = `${t.name.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.docx`;
+        const url = URL.createObjectURL(docxBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+      } catch (err) {
+        console.error('DOCX generation failed:', err);
+        alert('Gagal membuat file Word. Silakan gunakan Print / PDF.');
+      }
 
       // Auto-save after download
       letterhead = collectLetterhead();
