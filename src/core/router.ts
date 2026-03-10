@@ -34,12 +34,21 @@ export function navigate(path: string) {
 export function resolve() {
     if (cleanupFn) { cleanupFn(); cleanupFn = null; }
 
-    const hash = window.location.hash.slice(1) || '/';
+    const fullHash = window.location.hash.slice(1) || '/';
+    // Separate path from query string: #/template/foo?edit=xyz → path="/template/foo", qs="edit=xyz"
+    const [hash, queryString] = fullHash.split('?');
     for (const route of routes) {
         const match = hash.match(route.pattern);
         if (match) {
             const params: Record<string, string> = {};
             route.keys.forEach((key, i) => { params[key] = match[i + 1]; });
+            // Parse query string into params
+            if (queryString) {
+                queryString.split('&').forEach(pair => {
+                    const [k, v] = pair.split('=');
+                    if (k) params[k] = decodeURIComponent(v || '');
+                });
+            }
             route.handler(params);
             return;
         }

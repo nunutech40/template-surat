@@ -69,7 +69,8 @@ async function bootApp() {
         const hash = window.location.hash || '#/';
 
         if (hash.startsWith('#/template/')) {
-            const templateId = hash.replace('#/template/', '');
+            const rawId = hash.replace('#/template/', '');
+            const templateId = rawId.split('?')[0]; // Strip query params
             renderTemplateForm(mainContainer, templateId, hasSubscription);
         } else {
             renderDashboard(mainContainer);

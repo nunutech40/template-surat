@@ -286,21 +286,19 @@ ${paper.innerHTML}
 </body>
 </html>`;
 
-      // BOM (Byte Order Mark) + HTML → Word can read UTF-8 correctly
-      const blob = new Blob(['\ufeff', wordHtml], {
-        type: 'application/msword;charset=utf-8'
-      });
-      const url = URL.createObjectURL(blob);
+      // Convert to base64 data URI — more reliable filename than blob URL
+      const fullContent = '\ufeff' + wordHtml;
+      const base64 = btoa(unescape(encodeURIComponent(fullContent)));
+      const dataUri = 'data:application/msword;base64,' + base64;
+
+      const filename = `${t.name.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.doc`;
       const a = document.createElement('a');
-      a.href = url;
-      a.download = `${t.name.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.doc`;
-      // Must append to DOM for Safari/WebKit to respect download attribute
+      a.href = dataUri;
+      a.download = filename;
       a.style.display = 'none';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      // Delay revoke to let download start
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
 
       // Auto-save after download
       letterhead = collectLetterhead();
