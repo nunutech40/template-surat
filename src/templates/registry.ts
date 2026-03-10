@@ -45,6 +45,12 @@ import { suratIzinKegiatan } from './surat-izin-kegiatan';
 import { suratDukaCita } from './surat-duka-cita';
 import { suratPermohonanSponsor } from './surat-permohonan-sponsor';
 
+// Wave 5 — Final (+4 templates)
+import { suratPenawaranHarga } from './surat-penawaran-harga';
+import { suratAhliWaris } from './surat-ahli-waris';
+import { suratJalan } from './surat-jalan';
+import { suratPemberitahuan } from './surat-pemberitahuan';
+
 const templates: TemplateConfig[] = [
     // Wave 1 — MVP (5)
     suratLamaran,
@@ -74,7 +80,7 @@ const templates: TemplateConfig[] = [
     suratTugas,
     suratUndanganAcara,
     suratIzinOrangTua,
-    // Wave 4 (10)
+    // Wave 4 (11)
     suratPeringatan,
     suratPermohonanBantuan,
     suratBelumMenikah,
@@ -86,6 +92,11 @@ const templates: TemplateConfig[] = [
     suratIzinKegiatan,
     suratDukaCita,
     suratPermohonanSponsor,
+    // Wave 5 — Final (4)
+    suratPenawaranHarga,
+    suratAhliWaris,
+    suratJalan,
+    suratPemberitahuan,
 ];
 
 export function getAllTemplates(): TemplateConfig[] {
