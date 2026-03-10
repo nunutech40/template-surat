@@ -247,27 +247,31 @@ export function renderTemplateForm(container: HTMLElement, templateId: string, h
       const paper = container.querySelector('#preview-paper');
       if (!paper) return;
 
-      // Build Word-compatible HTML document
-      const wordHtml = `
-<!DOCTYPE html>
-<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      // Build Word-compatible HTML document with Word XML processing instructions
+      const wordHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
       xmlns:w="urn:schemas-microsoft-com:office:word"
       xmlns="http://www.w3.org/TR/REC-html40">
 <head>
-<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--[if gte mso 9]>
+<xml>
+  <w:WordDocument>
+    <w:View>Print</w:View>
+    <w:Zoom>100</w:Zoom>
+    <w:DoNotOptimizeForBrowser/>
+  </w:WordDocument>
+</xml>
+<![endif]-->
 <style>
-  @page {
-    size: A4;
-    margin: 20mm;
-  }
+  @page { size: 210mm 297mm; margin: 20mm; }
   body {
-    font-family: 'Times New Roman', serif;
+    font-family: 'Times New Roman', Times, serif;
     font-size: 12pt;
     line-height: 1.6;
     color: #000;
   }
-  table { border-collapse: collapse; }
-  td, th { padding: 4px 8px; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { padding: 4px 8px; vertical-align: top; }
   .letter-kop { text-align: center; margin-bottom: 12px; }
   .kop-line { border: none; border-top: 3px solid #000; margin: 8px 0 16px 0; }
   .kop-text h2 { margin: 0; font-size: 16pt; }
@@ -282,13 +286,21 @@ ${paper.innerHTML}
 </body>
 </html>`;
 
-      const blob = new Blob([wordHtml], { type: 'application/msword' });
+      // BOM (Byte Order Mark) + HTML → Word can read UTF-8 correctly
+      const blob = new Blob(['\ufeff', wordHtml], {
+        type: 'application/msword;charset=utf-8'
+      });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = `${t.name.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.doc`;
+      // Must append to DOM for Safari/WebKit to respect download attribute
+      a.style.display = 'none';
+      document.body.appendChild(a);
       a.click();
-      URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      // Delay revoke to let download start
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
 
       // Auto-save after download
       letterhead = collectLetterhead();
