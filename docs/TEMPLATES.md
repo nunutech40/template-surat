@@ -10,8 +10,8 @@
 
 | Wave | Timeline | Templates | Status |
 |------|----------|-----------|--------|
-| MVP | Hari 1-4 | 5 template | 🟡 Planned |
-| Wave 2 | Minggu 2 | +10 template | ⬜ Backlog |
+| MVP | Hari 1-4 | 5 template | ✅ Done |
+| Wave 2 | Minggu 2 | +10 template | ✅ Done |
 | Wave 3 | Bulan 1 | +10 template | ⬜ Backlog |
 | Wave 4 | Bulan 2 | +10 template | ⬜ Backlog |
 | Wave 5 | Bulan 3+ | +7 template | ⬜ Backlog |
