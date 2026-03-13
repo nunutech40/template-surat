@@ -1,5 +1,5 @@
 // ── Surat App Configuration ──────────────────────────────────────────
 export const config = {
-    product: 'surat',
+    product: 'dokumen-template',
     apiBase: 'https://sains-atomic.web.id',
 } as const;

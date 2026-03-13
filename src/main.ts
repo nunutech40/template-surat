@@ -43,13 +43,16 @@ async function bootApp() {
     const user = getUser();
     const isAdmin = user?.role === 'admin';
 
-    // Freemium model: all logged-in users can access the dashboard.
-    // hasSubscription only determines premium features (unlimited letters, export Word).
+    // Paid model: users must have active subscription to access the app.
+    // Admin bypasses this check.
     if (isAdmin) {
         hasSubscription = true;
     } else {
-        // Check if user has paid subscription (for premium features)
         hasSubscription = await checkAccess().catch(() => false);
+        if (!hasSubscription) {
+            showPricingPage();
+            return;
+        }
     }
 
     // App shell
